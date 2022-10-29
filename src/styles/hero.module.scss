@@ -1,0 +1,52 @@
+@use "mixins";
+
+.container {
+  display: flex;
+  align-items: flex-end;
+  position: relative;
+  width: 100%;
+  height: 800px;
+  @include mixins.for-tablet-portrait-up {
+    height: 1200px;
+  }
+  background-image: url("/images/neighborhood.jpg");
+  background-size: cover;
+}
+
+.bottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+  backdrop-filter: blur(20px);
+  width: 100%;
+  padding: 32px;
+  height: 60%;
+  h2 {
+    font-size: var(--fs-lg);
+    margin-bottom: 24px;
+    @include mixins.for-tablet-portrait-up {
+      font-size: var(--fs-xl);
+    }
+    span {
+      color: var(--color-secondary);
+    }
+  }
+}
+
+.autocomplete {
+  display: flex;
+  background: #ffffff;
+  border-radius: 8px 8px 8px 0;
+  background: #ffffff;
+  padding: 4px;
+  margin-right: auto;
+  &::placeholder {
+    color: #000000;
+  }
+  @include mixins.for-desktop-up {
+    // padding: 16px;
+    // font-size: 1.5rem;
+  }
+}

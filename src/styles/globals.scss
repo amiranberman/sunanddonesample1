@@ -1,0 +1,73 @@
+@use "mixins";
+@import "variables";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #ed981c;
+  --color-primary-rgb: 237, 152, 28;
+  --color-secondary: #81c042;
+  --type-scale: 1.222;
+  --fs-xs: calc(var(--fs-sm) / var(--type-scale));
+  --fs-sm: calc(var(--fs-base) / var(--type-scale));
+  --fs-base: clamp(1rem, 0.34vw + 0.91rem, 1.19rem);
+  --fs-md: calc(var(--fs-base) * var(--type-scale));
+  --fs-lg: calc(var(--fs-md) * var(--type-scale));
+  --fs-xl: calc(var(--fs-lg) * var(--type-scale));
+  --fs-2xl: calc(var(--fs-xl) * var(--type-scale));
+  --fs-3xl: calc(var(--fs-2xl) * var(--type-scale));
+  --fs-4xl: calc(var(--fs-3xl) * var(--type-scale));
+  --fs-5xl: calc(var(--fs-4xl) * var(--type-scale));
+
+  @include mixins.for-desktop-up {
+    --type-scale: 1.333;
+  }
+}
+
+.text-green {
+  color: var(--color-secondary);
+}
+
+.bg-green {
+  background-color: var(--color-secondary);
+}
+
+.text-orange {
+  color: var(--color-primary);
+}
+
+.bg-orange {
+  background-color: var(--color-primary);
+}
+
+@media (min-width: 40em) {
+  :root {
+    /* --fs-600: 3rem; */
+    /* --fs-400: 1.125rem; */
+  }
+}
+
+::selection {
+  color: #ffffff;
+  background: var(--color-primary);
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+  font-family: Poppins, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}

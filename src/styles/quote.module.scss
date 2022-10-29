@@ -1,0 +1,23 @@
+.quote {
+  border-radius: 16px;
+  border: 1px solid black;
+  background: #fff;
+  padding: 16px;
+}
+
+.systemsize {
+  span {
+    font-size: 2rem;
+  }
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+}
+
+.box {
+  border: 1px solid black;
+  background: #f4f4f4;
+  padding: 4px;
+}

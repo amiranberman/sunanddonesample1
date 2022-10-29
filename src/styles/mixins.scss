@@ -1,0 +1,38 @@
+@use "sass:math";
+@use "sass:map";
+@import "variables";
+
+@mixin for-phone-only {
+  @media (max-width: 599px) {
+    @content;
+  }
+}
+@mixin for-tablet-portrait-up {
+  @media (min-width: map.get($media-breakpoints, "tablet-portrait")) {
+    @content;
+  }
+}
+@mixin for-tablet-landscape-up {
+  @media (min-width: map.get($media-breakpoints, "tablet-landscape")) {
+    @content;
+  }
+}
+@mixin for-desktop-up {
+  @media (min-width: map.get($media-breakpoints, "desktop")) {
+    @content;
+  }
+}
+@mixin for-big-desktop-up {
+  @media (min-width: map.get($media-breakpoints, "tablet-landscape")) {
+    @content;
+  }
+}
+
+@mixin overlay($url, $color, $opacity) {
+  background: linear-gradient(
+      to right,
+      rgba($color, $opacity),
+      rgba($color, $opacity)
+    ),
+    url($url);
+}

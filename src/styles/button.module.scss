@@ -1,0 +1,28 @@
+@use "mixins";
+
+.container {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 12px;
+  white-space: nowrap;
+  background: var(--color-primary);
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 100%;
+  color: #ffffff;
+  cursor: pointer;
+  border-radius: 8px;
+  @include mixins.for-tablet-portrait-up {
+    padding: 12px 24px;
+  }
+  @include mixins.for-desktop-up {
+    font-size: 1.5rem;
+  }
+}
+
+.secondary {
+  background: var(--color-secondary);
+}

@@ -1,0 +1,61 @@
+@use "mixins";
+
+$color-hover: #aaaaaa;
+
+.focused {
+  border-radius: 8px 8px 0 0 !important;
+}
+
+.container {
+  display: inline-flex;
+  max-width: 600px;
+  width: 100%;
+  position: relative;
+  color: #000000;
+  padding: 8px;
+  background: #ffffff;
+  border-radius: 8px;
+  @include mixins.for-desktop-up {
+    padding: 12px;
+  }
+  input {
+    all: unset;
+    background: #ffffff;
+    width: 100%;
+    &::placeholder {
+      color: #000000;
+    }
+    @include mixins.for-desktop-up {
+      font-size: 1.5rem;
+    }
+  }
+  ul {
+    all: unset;
+    display: inline-block;
+    background: #ffffff;
+    border-radius: 0 0 8px 8px;
+    // border-top: 1px solid $color-hover;
+    position: absolute;
+    top: calc(100%);
+    left: 0;
+    width: 100%;
+    &::after {
+      display: block;
+      margin: 8px 16px;
+      content: "Powered by Google";
+      text-align: right;
+    }
+  }
+
+  li {
+    all: unset;
+    display: block;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-top: 1px solid $color-hover;
+    &:hover {
+      background: var(--color-primary);
+      color: #ffffff;
+    }
+  }
+}

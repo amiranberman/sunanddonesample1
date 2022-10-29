@@ -1,0 +1,63 @@
+@use "mixins";
+
+.container {
+  color: #ffffff;
+  background: var(--color-primary);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  h1 {
+    font-size: var(--fs-2xl);
+    margin: 0;
+  }
+}
+
+.content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  @include mixins.for-desktop-up {
+    margin: 0 auto;
+    width: 1200px;
+  }
+}
+
+.usage {
+  justify-content: space-around;
+  padding: 32px;
+  background: #ffffff;
+  margin: 0 auto;
+  max-width: 1200px;
+  height: 100%;
+  text-align: center;
+  flex-grow: 1;
+  p {
+    font-size: 3.5rem;
+  }
+}
+
+.disabled {
+  cursor: not-allowed !important;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button {
+  cursor: pointer;
+  background: #ffffff;
+  color: var(--color-primary);
+  padding: 4px 8px;
+  border-radius: 2px;
+}
+
+.title {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+}

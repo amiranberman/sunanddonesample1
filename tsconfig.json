@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "jsxImportSource": "@emotion/react",
+    "incremental": true,
+    "noUncheckedIndexedAccess": true,
+    "experimentalDecorators": true,
+    "downlevelIteration": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/components/*": ["src/components/*"],
+      "@/assets/*": ["src/assets/*"],
+      "@/prisma/*": ["prisma/generated/schemas/*"],
+      "@/schemas/*": ["src/schemas/*"],
+      "@/styles/*": ["src/styles/*"],
+      "@/layouts/*": ["src/layouts/*"],
+      "@/pages/*": ["src/pages/*"],
+      "@/utils/*": ["src/utils/*"],
+      "@/stores/*": ["src/stores/*"],
+      "@/server/*": ["src/server/*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "next-auth.d.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.js"
+  ],
+  "exclude": ["node_modules"]
+}

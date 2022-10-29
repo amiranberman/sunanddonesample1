@@ -1,0 +1,46 @@
+.usage {
+  justify-content: space-around;
+  margin: auto;
+  padding: 32px;
+  text-align: center;
+  p {
+    font-size: 3.5rem;
+  }
+}
+
+.selections {
+  display: flex;
+  justify-content: space-around;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: space-around;
+  padding: 32px;
+  background: #ffffff;
+  margin: 0 auto;
+  max-width: 1200px;
+  height: 100%;
+  text-align: center;
+  flex-grow: 1;
+}
+.container {
+  display: inline-block;
+  text-align: left;
+  > * + * {
+    margin-top: 32px;
+  }
+}
+
+.help {
+  font-size: var(--fs-sm);
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  color: #6c7d8c;
+  svg {
+    fill: var(--color-primary);
+  }
+}

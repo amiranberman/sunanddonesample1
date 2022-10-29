@@ -1,0 +1,48 @@
+@use "mixins";
+.container {
+  text-align: left;
+  span {
+    display: block;
+    color: #6c7d8c;
+    margin-bottom: 6px;
+  }
+}
+.group {
+  border: 2px solid #dde5eb;
+  background: #ffffff;
+  display: inline-grid;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 8px;
+  align-items: center;
+  grid-template-columns: 1fr;
+  justify-items: start;
+  @include mixins.for-tablet-portrait-up {
+    grid-auto-flow: column;
+    justify-items: center;
+  }
+
+  > * + * {
+    $border: 1px solid #eff0f3;
+
+    border-top: $border;
+    @include mixins.for-tablet-portrait-up {
+      border-top: none;
+      border-left: $border;
+    }
+  }
+
+  > * {
+    padding: 16px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.radio {
+  padding: 24px 32px;
+  input {
+    margin-right: 8px;
+  }
+}

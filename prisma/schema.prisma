@@ -1,0 +1,320 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+}
+
+generator zod {
+  provider              = "zod-prisma"
+  output                = "./generated/schemas"
+  relationModel         = true
+  modelCase             = "PascalCase"
+  modelSuffix           = "Model"
+  useDecimalJs          = false
+  prismaJsonNullability = true
+}
+
+datasource db {
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  shadowDatabaseUrl    = env("SHADOW_DATABASE_URL")
+  referentialIntegrity = "prisma"
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Zipcode {
+  id              String  @unique
+  utility         String
+  residential     Decimal @db.Decimal(6, 5)
+  commercial      Decimal @db.Decimal(6, 5)
+  residential2019 Decimal @db.Decimal(6, 5)
+  commercial2019  Decimal @db.Decimal(6, 5)
+  netMetering     Decimal @db.Decimal(3, 2)
+  solarLCOE       Decimal @db.Decimal(3, 2)
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @default(cuid())
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model User {
+  id            String     @id @default(cuid())
+  name          String?
+  email         String?    @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  properties    Property[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+enum PropertyType {
+  COMMERCIAL
+  RESIDENTIAL
+  RENTAL
+}
+
+enum Month {
+  JANUARY
+  FEBRUARY
+  MARCH
+  APRIL
+  MAY
+  JUNE
+  JULY
+  AUGUST
+  SEPTEMBER
+  OCTOBER
+  NOVEMBER
+  DECEMBER
+}
+
+// User -> Property -> Quote[] -> Bill
+//                  -> Address -> Rate
+
+model Property {
+  id        String  @id @default(cuid())
+  userId    String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  addressId String
+  address   Address @relation(fields: [addressId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, addressId])
+  @@index([userId])
+}
+
+enum QuoteType {
+  LOAN
+  CASH
+  LEASE
+}
+
+model Quote {
+  id                              String              @id @default(cuid())
+  address                         Address             @relation(fields: [addressId], references: [id])
+  type                            QuoteType
+  bill                            Bill                @relation(fields: [billId], references: [id])
+  offsetTarget                    Decimal             @db.Decimal(3, 2)
+  product                         InstallerSolarPanel @relation(fields: [installerSolarPanelInstallerId, installerSolarPanelSolarPanelId], references: [installerId, solarPanelId])
+  addons                          Addons?
+  installerSolarPanelId           String
+  billId                          String
+  installerSolarPanelInstallerId  String
+  installerSolarPanelSolarPanelId String
+  addressId                       String
+}
+
+model Addons {
+  quoteId    String    @id
+  quote      Quote     @relation(fields: [quoteId], references: [id])
+  inverter   Inverter? @relation(fields: [inverterId], references: [id])
+  battery    Battery?  @relation(fields: [batteryId], references: [id])
+  inverterId String?
+  batteryId  String?
+}
+
+model Battery {
+  id     String   @id @default(cuid())
+  cost   Decimal  @db.Decimal(10, 2)
+  addons Addons[]
+}
+
+model Inverter {
+  id     String   @id @default(cuid())
+  cost   Decimal  @db.Decimal(10, 2)
+  addons Addons[]
+}
+
+model Bill {
+  id           String       @id @default(cuid())
+  monthlyUsage Int
+  propertyType PropertyType
+  quotes       Quote[]
+}
+
+model Rate {
+  id          String    @id @default(cuid())
+  utility     String
+  commercial  Decimal   @db.Decimal(6, 5)
+  residential Decimal   @db.Decimal(6, 5)
+  address     Address[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
+}
+
+model Address {
+  id         String     @id @default(cuid())
+  placeId    String     @unique
+  street     String
+  city       String
+  state      String
+  owner      String?
+  sunnumber  Int
+  roofspace  Int?
+  squareFeet Int?
+  lotSize    Int?
+  bedrooms   Int?
+  value      Int?
+  zipcode    String
+  locationId String
+  location   Location   @relation(references: [id], onDelete: Cascade, fields: [locationId])
+  properties Property[]
+  rateId     String     @unique
+  rate       Rate       @relation(fields: [rateId], references: [id], onDelete: Cascade)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @default(now()) @updatedAt
+  quotes     Quote[]
+}
+
+model Location {
+  id      String    @id @default(cuid())
+  lat     Float
+  lon     Float
+  address Address[]
+
+  @@unique([lat, lon])
+}
+
+model SolarPanel {
+  id             String           @id @default(cuid())
+  model          String
+  series         String?
+  wattage        Int
+  efficiency     Decimal          @db.Decimal(5, 4)
+  rating         Int
+  degradation    Decimal          @db.Decimal(5, 4)
+  output25       Decimal          @db.Decimal(5, 4)
+  warranty       Int
+  productImage   String?          @db.Text
+  images         Image[]
+  dimensions     Dimensions?      @relation(references: [id], onDelete: Cascade, fields: [dimensionsId])
+  ppwMarket      Float?
+  material       String
+  colors         SolarPanelColors @relation(fields: [solarPanelColorsId], references: [id], onDelete: Cascade)
+  manufacturer   String
+  energySageLink String
+  countries      Country[]
+
+  dimensionsId       String?
+  solarPanelColorsId String
+  installers         InstallerSolarPanel[]
+
+  @@unique([manufacturer, model])
+}
+
+model Image {
+  id         String       @id @default(cuid())
+  url        String       @unique @db.VarChar(255)
+  SolarPanel SolarPanel[]
+}
+
+model Country {
+  id          String       @id @default(cuid())
+  name        String       @unique
+  solarPanels SolarPanel[]
+}
+
+model Installer {
+  id              String                @id @default(cuid())
+  name            String                @unique
+  image           String
+  founded         DateTime
+  warranty        Int                   @default(25)
+  subcontract     Boolean               @default(false)
+  solarinsure     Boolean               @default(false)
+  types           InstallerType[]
+  operatingStates State[]
+  reviews         InstallerReview[]
+  solarPanels     InstallerSolarPanel[]
+}
+
+enum InstallerTypeEnum {
+  RESIDENTIAL
+  COMMERCIAL
+  COMMUNITY
+}
+
+model InstallerType {
+  id        String            @id @default(cuid())
+  installer Installer[]
+  type      InstallerTypeEnum @unique
+}
+
+model InstallerReview {
+  id     String @id @default(cuid())
+  rating Int
+
+  installer Installer[]
+}
+
+model State {
+  name         String      @id
+  abbreviation String      @unique
+  sunnumber    Int         @default(0)
+  installer    Installer[]
+}
+
+model InstallerSolarPanel {
+  id           String     @id @default(cuid())
+  installer    Installer  @relation(fields: [installerId], references: [id])
+  panel        SolarPanel @relation(fields: [solarPanelId], references: [id])
+  installerId  String
+  solarPanelId String
+  cost         Decimal    @db.Decimal(6, 2)
+  available    Boolean    @default(true)
+  featured     Boolean    @default(false)
+  quotes       Quote[]
+
+  @@unique([installerId, solarPanelId])
+}
+
+model Dimensions {
+  id     String       @id @default(cuid())
+  length Float
+  width  Float
+  depth  Float
+  panel  SolarPanel[]
+}
+
+model SolarPanelColors {
+  id        String @id @default(cuid())
+  cell      String
+  frame     String
+  backsheet String
+
+  SolarPanel SolarPanel[]
+}

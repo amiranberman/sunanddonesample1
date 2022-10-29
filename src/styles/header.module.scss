@@ -1,0 +1,32 @@
+@use "mixins";
+
+.container {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(20px);
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 80px;
+  z-index: 999;
+  padding: 12px 24px;
+}
+
+.sticky {
+  position: sticky !important;
+}
+
+.buttons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  @include mixins.for-tablet-portrait-up {
+    gap: 16px;
+  }
+}
+
+.logo {
+  cursor: pointer;
+}

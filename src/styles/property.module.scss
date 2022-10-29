@@ -1,0 +1,105 @@
+@use "mixins";
+
+.property {
+  position: relative;
+  @include mixins.for-desktop-up {
+    display: flex;
+  }
+}
+
+.map {
+  // aspect-ratio: 4/3;
+  width: 100%;
+  height: 600px;
+  @include mixins.for-desktop-up {
+    min-height: 100vh;
+    height: 100%;
+  }
+}
+
+.button {
+  max-width: 300px;
+  padding: 16px 24px;
+  &:hover {
+    background: var(--color-primary);
+  }
+}
+
+.sunroof {
+  height: calc(100% - 99px);
+  color: #ffffff;
+  position: relative;
+  background: transparentize($color: #000000, $amount: 0.25);
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  @include mixins.for-tablet-landscape-up {
+    padding: 24px 64px;
+    align-items: flex-start;
+  }
+  &:before {
+    content: "";
+    position: absolute;
+    z-index: -100;
+    inset: 0rem;
+    background: url("/images/neighborhood.jpg");
+    filter: blur(40px);
+  }
+  @include mixins.for-desktop-up {
+    backdrop-filter: blur(40px);
+    position: absolute;
+    right: 0;
+    top: 99px;
+    width: 850px;
+    &:before {
+      all: unset;
+    }
+  }
+}
+
+.sunroofCard {
+  text-align: center;
+  width: 100%;
+  @include mixins.for-tablet-landscape-up {
+    text-align: left;
+  }
+  h2 {
+    font-size: var(--fs-xl);
+  }
+}
+
+.sunroofItem {
+  font-size: var(--fs-400);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  margin: 48px 0;
+  border: 2px solid #ffffff;
+  border-radius: 16px;
+  padding: 32px 24px;
+
+  @include mixins.for-tablet-landscape-up {
+    flex-direction: row;
+  }
+  p {
+    vertical-align: middle;
+    span {
+      vertical-align: inherit;
+      display: block;
+      @include mixins.for-tablet-landscape-up {
+        display: inline-block;
+      }
+    }
+    p {
+      color: #dddddd;
+      font-size: 0.95rem;
+    }
+  }
+  span {
+    font-weight: bold;
+    font-size: var(--fs-lg);
+    color: var(--color-secondary);
+  }
+}

@@ -1,0 +1,36 @@
+@use "mixins";
+
+.section {
+  background: var(--color-primary);
+  background: #ffffff;
+  // padding: 0;
+  > div {
+    margin: 0;
+  }
+  img {
+    // z-index: -10;
+  }
+  h2 {
+    background: var(--color-primary);
+    text-align: center;
+    padding: 32px 0;
+  }
+  p {
+    font-size: 1.5rem;
+    margin: 0;
+    @include mixins.for-desktop-up {
+      margin-right: 45%;
+    }
+  }
+}
+
+.container {
+  padding-bottom: 120px;
+  margin: 20px auto;
+  max-width: 1400px;
+  display: flex;
+  background: url("/images/praise.svg");
+  background-repeat: no-repeat;
+  background-position: right 20% bottom 0px;
+  background-size: contain;
+}
